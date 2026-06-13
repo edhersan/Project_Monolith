@@ -1,0 +1,8 @@
+google-genai
+faster-whisper
+sounddevice
+python-dotenv
+SpeechRecognition
+SoundFile
+edge-tts
+playsound
