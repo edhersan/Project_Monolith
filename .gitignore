@@ -1,0 +1,20 @@
+# Entorno virtual
+venv/
+.venv/
+env/
+
+# Variables de entorno y llaves secretas
+.env
+
+# Archivos temporales de Python y caché
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Audio temporal generado por Monolith
+*.mp3
+
+# Configuración local de VS Code
+.vscode/
