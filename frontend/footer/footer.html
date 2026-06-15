@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>edhersan x Zael V1 | Footer OBS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* Base para Browser Source en OBS: transparente y sin scroll. */
+html,body{background:transparent;width:100%;height:100%;overflow:hidden;font-family:'Courier New',monospace}
+
+#footer{
+  /* Zona segura: centrado, maximo 1920px y altura flexible en escenas mas pequenas. */
+  display:flex;align-items:stretch;height:clamp(90px,10.6vh,116px);
+  width:min(100vw,1920px);
+  background:rgba(7,7,14,0.92);
+  border-top:2px solid #5533cc;
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+}
+
+/* PANELS */
+.char-panel{display:flex;align-items:center;gap:10px;padding:0 clamp(8px,1.2vw,14px);min-width:clamp(150px,16vw,210px)}
+#panel-left{border-right:1px solid #1a1a2e}
+#panel-right{border-left:1px solid #1a1a2e;flex-direction:row-reverse}
+
+.char-col{display:flex;flex-direction:column;align-items:center;gap:3px}
+.char-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#444466}
+.char-label.green{color:#00ff88}
+.char-label.purple{color:#aa88ff}
+
+/* SPEAK DOTS */
+.dots{display:flex;gap:2px;height:8px;align-items:flex-end;opacity:0;transition:opacity .2s}
+.dots.on{opacity:1}
+.dots span{width:3px;border-radius:1px;background:#fff;height:3px;animation:bd .45s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.12s}
+.dots span:nth-child(3){animation-delay:.24s}
+@keyframes bd{0%,100%{height:3px}50%{height:10px}}
+
+/* STATS */
+.stats{display:flex;flex-direction:column;gap:5px;font-size:8px}
+.stat{display:flex;align-items:center;gap:4px}
+.stat-r{flex-direction:row-reverse}
+.stat-lbl{color:#333355;width:12px}
+.bar{width:44px;height:4px;background:#111128;border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px}
+.hp{background:#ff3344}
+.mp{background:#5533cc}
+.hp2{background:#00ff88}
+.mp2{background:#00ccff}
+.stat-val{color:#444466;font-size:8px}
+
+/* HEADS */
+.head{position:relative;width:70px;height:70px;flex-shrink:0}
+.head *{position:absolute}
+
+/* DIALOG */
+#dialog{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(5px,0.8vh,8px) clamp(8px,1.2vw,16px);gap:4px;min-width:0}
+#dlg-top{display:flex;justify-content:space-between;align-items:center}
+#dlg-speaker{font-size:clamp(8px,0.85vh,9px);letter-spacing:2px;text-transform:uppercase;color:#555577}
+#channel-tag{font-size:8px;color:#333355;letter-spacing:1px}
+#dlg-box{background:rgba(5,5,12,0.9);border:1px solid #1a1a2e;border-radius:3px;padding:7px 10px;position:relative}
+#dlg-box::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;border:1px solid #0d0d1e;border-radius:3px;pointer-events:none}
+#dlg-text{font-size:clamp(9px,1vh,11px);color:#c8c8e8;line-height:1.45;min-height:clamp(20px,2.8vh,30px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dlg-cursor{display:inline-block;width:6px;height:11px;background:#5533cc;margin-left:1px;vertical-align:bottom;animation:cur .8s step-end infinite}
+@keyframes cur{0%,100%{opacity:1}50%{opacity:0}}
+#ws-status{font-size:8px;display:flex;align-items:center;gap:4px;color:#222244}
+#ws-dot{width:5px;height:5px;border-radius:50%;background:#ff3344;display:inline-block;flex-shrink:0}
+#ws-dot.on{background:#00ff88}
+
+/* Ajustes para resoluciones comunes de stream (1366p/1280p). */
+@media (max-width:1200px){
+  .stats{display:none}
+  .char-panel{min-width:112px;gap:6px}
+  #dialog{padding:5px 8px}
+  #channel-tag{display:none}
+}
+
+/* Ajuste compacto para overlays estrechos sin romper animaciones. */
+@media (max-width:860px){
+  #footer{height:84px}
+  .char-panel{min-width:92px;padding:0 6px}
+  #ws-status{display:none}
+  .char-label{font-size:7px;letter-spacing:1px}
+  #dlg-box{padding:5px 7px}
+  #dlg-cursor{height:9px;width:5px}
+}
+</style>
+</head>
+<body>
+<div id="footer">
+
+  <!-- EDHERSAN (izquierda) -->
+  <div class="char-panel" id="panel-left">
+    <div class="char-col">
+      <div class="dots" id="dots-edhersan"><span></span><span></span><span></span></div>
+      <div class="head" id="head-edhersan">
+        <!-- cabello top -->
+        <div style="left:8px;top:2px;width:54px;height:14px;background:#1e0e06;border-radius:6px 6px 2px 2px"></div>
+        <!-- cabello lateral -->
+        <div style="left:6px;top:12px;width:8px;height:20px;background:#1e0e06"></div>
+        <div style="left:56px;top:12px;width:8px;height:20px;background:#1e0e06"></div>
+        <!-- cara -->
+        <div style="left:10px;top:12px;width:50px;height:38px;background:#c87040;border-radius:4px"></div>
+        <!-- sombra laterales -->
+        <div style="left:10px;top:12px;width:6px;height:38px;background:#a85830;border-radius:4px 0 0 4px"></div>
+        <div style="left:54px;top:12px;width:6px;height:38px;background:#a85830;border-radius:0 4px 4px 0"></div>
+        <!-- orejas -->
+        <div style="left:5px;top:22px;width:6px;height:12px;background:#b86838;border-radius:3px"></div>
+        <div style="left:59px;top:22px;width:6px;height:12px;background:#b86838;border-radius:3px"></div>
+        <!-- cejas -->
+        <div style="left:14px;top:19px;width:14px;height:3px;background:#140804;border-radius:2px"></div>
+        <div style="left:42px;top:19px;width:14px;height:3px;background:#140804;border-radius:2px"></div>
+        <!-- ojos blancos -->
+        <div style="left:14px;top:23px;width:14px;height:10px;background:#f0f0f0;border-radius:3px"></div>
+        <div style="left:42px;top:23px;width:14px;height:10px;background:#f0f0f0;border-radius:3px"></div>
+        <!-- iris -->
+        <div style="left:17px;top:25px;width:8px;height:7px;background:#1e1008;border-radius:2px"></div>
+        <div style="left:45px;top:25px;width:8px;height:7px;background:#1e1008;border-radius:2px"></div>
+        <!-- brillos -->
+        <div style="left:22px;top:25px;width:2px;height:2px;background:#fff;border-radius:1px"></div>
+        <div style="left:50px;top:25px;width:2px;height:2px;background:#fff;border-radius:1px"></div>
+        <!-- nariz -->
+        <div style="left:31px;top:34px;width:8px;height:4px;background:#a05828;border-radius:0 0 3px 3px"></div>
+        <!-- barba -->
+        <div style="left:12px;top:40px;width:46px;height:10px;background:#1e0e06;border-radius:2px 2px 4px 4px"></div>
+        <!-- boca -->
+        <div id="mouth-edhersan" style="left:22px;top:42px;width:26px;height:4px;background:#0a0604;border-radius:2px"></div>
+        <!-- cuello -->
+        <div style="left:26px;top:50px;width:18px;height:10px;background:#b86838"></div>
+        <!-- hoodie borgona -->
+        <div style="left:4px;top:58px;width:62px;height:12px;background:#6a1422;border-radius:0 0 4px 4px"></div>
+        <div style="left:26px;top:56px;width:18px;height:8px;background:#4a0e18"></div>
+      </div>
+      <div class="char-label purple">edhersan</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="stat-lbl" style="color:#ffaa00">LV</span><span class="stat-val" style="color:#ffcc44;font-weight:bold">99</span></div>
+      <div class="stat"><span class="stat-lbl">HP</span><div class="bar"><div class="bar-fill hp" style="width:100%"></div></div><span class="stat-val">9999</span></div>
+      <div class="stat"><span class="stat-lbl">MP</span><div class="bar"><div class="bar-fill mp" style="width:72%"></div></div><span class="stat-val">720</span></div>
+    </div>
+  </div>
+
+  <!-- DIALOG CENTER -->
+  <div id="dialog">
+    <div id="dlg-top">
+      <div id="dlg-speaker">- sistema -</div>
+      <div id="channel-tag">[CH] edhersan</div>
+    </div>
+    <div id="dlg-box">
+      <div id="dlg-text"><span id="dlg-content">Zael V1 online. Listo para el stream, carnal.</span><span id="dlg-cursor"></span></div>
+    </div>
+    <div id="ws-status"><span id="ws-dot"></span><span id="ws-label">WebSocket: esperando conexion...</span></div>
+  </div>
+
+  <!-- ZAEL V1 (derecha) -->
+  <div class="char-panel" id="panel-right">
+    <div class="char-col">
+      <div class="dots" id="dots-zael"><span></span><span></span><span></span></div>
+      <div class="head" id="head-zael">
+        <!-- cabello blanco -->
+        <div style="left:8px;top:2px;width:54px;height:14px;background:#e0eee8;border-radius:6px 6px 2px 2px"></div>
+        <div style="left:6px;top:12px;width:8px;height:16px;background:#1a2a1e"></div>
+        <div style="left:56px;top:12px;width:8px;height:16px;background:#d0e8e0"></div>
+        <!-- streaks verdes -->
+        <div style="left:16px;top:3px;width:5px;height:12px;background:#00ff88;border-radius:2px"></div>
+        <div style="left:30px;top:2px;width:5px;height:10px;background:#00cc66;border-radius:2px"></div>
+        <div style="left:46px;top:3px;width:5px;height:12px;background:#00ff88;border-radius:2px"></div>
+        <!-- antena -->
+        <div style="left:52px;top:0px;width:4px;height:10px;background:#00ff88;border-radius:2px"></div>
+        <div style="left:50px;top:0px;width:8px;height:3px;background:#00ff88;border-radius:2px"></div>
+        <!-- cara izq oscura -->
+        <div style="left:10px;top:12px;width:25px;height:40px;background:#111e14;border-radius:4px 0 0 4px"></div>
+        <!-- cara der blanca -->
+        <div style="left:35px;top:12px;width:25px;height:40px;background:#ddeee6;border-radius:0 4px 4px 0"></div>
+        <!-- línea división -->
+        <div style="left:33px;top:12px;width:4px;height:40px;background:#00ff88;opacity:.6"></div>
+        <!-- circuitos -->
+        <div style="left:12px;top:16px;width:2px;height:20px;background:#00ff88;opacity:.5"></div>
+        <div style="left:12px;top:24px;width:12px;height:2px;background:#00ff88;opacity:.5"></div>
+        <div style="left:12px;top:32px;width:10px;height:2px;background:#00cc66;opacity:.4"></div>
+        <!-- ojo izq escáner -->
+        <div style="left:14px;top:23px;width:14px;height:10px;background:#001800;border-radius:3px;border:1px solid #00ff8844"></div>
+        <div style="left:17px;top:25px;width:8px;height:6px;background:#ff2200;border-radius:2px"></div>
+        <div style="left:19px;top:26px;width:4px;height:3px;background:#ff6644;border-radius:1px"></div>
+        <div style="left:14px;top:25px;width:14px;height:1px;background:#ff220022"></div>
+        <div style="left:14px;top:28px;width:14px;height:1px;background:#ff220022"></div>
+        <!-- ojo der verde -->
+        <div style="left:42px;top:23px;width:14px;height:10px;background:#fff;border-radius:3px"></div>
+        <div style="left:44px;top:24px;width:10px;height:8px;background:#ccffe8;border-radius:2px"></div>
+        <div style="left:46px;top:25px;width:6px;height:6px;background:#00aa44;border-radius:2px"></div>
+        <div style="left:47px;top:26px;width:3px;height:3px;background:#004422;border-radius:1px"></div>
+        <div style="left:50px;top:26px;width:2px;height:2px;background:#fff;border-radius:1px"></div>
+        <!-- cejas -->
+        <div style="left:13px;top:19px;width:16px;height:3px;background:#00ff88;border-radius:1px"></div>
+        <div style="left:41px;top:19px;width:14px;height:3px;background:#224433;border-radius:1px"></div>
+        <!-- nariz -->
+        <div style="left:31px;top:34px;width:8px;height:4px;background:#aaccbb;border-radius:0 0 3px 3px"></div>
+        <!-- boca -->
+        <div id="mouth-zael" style="left:22px;top:43px;width:26px;height:3px;background:#224433;border-radius:2px"></div>
+        <!-- orejas -->
+        <div style="left:5px;top:22px;width:6px;height:14px;background:#0a1a0e;border-radius:3px;border:1px solid #00ff8844"></div>
+        <div style="left:6px;top:25px;width:4px;height:8px;background:#001800"></div>
+        <div style="left:59px;top:22px;width:6px;height:14px;background:#cce0d8;border-radius:3px"></div>
+        <!-- cuello -->
+        <div style="left:26px;top:52px;width:18px;height:8px;background:#c8e0d4"></div>
+        <div style="left:28px;top:54px;width:4px;height:4px;background:#00ff88;border-radius:1px"></div>
+        <div style="left:38px;top:54px;width:4px;height:4px;background:#00ff88;border-radius:1px"></div>
+        <!-- armadura -->
+        <div style="left:4px;top:58px;width:62px;height:12px;background:#0a1a0e;border-radius:0 0 4px 4px"></div>
+        <div style="left:4px;top:58px;width:62px;height:3px;background:#00ff88;opacity:.7"></div>
+        <div style="left:14px;top:62px;width:4px;height:8px;background:#00ff88;opacity:.5"></div>
+        <div style="left:52px;top:62px;width:4px;height:8px;background:#00ff88;opacity:.5"></div>
+      </div>
+      <div class="char-label green">Zael V1</div>
+    </div>
+    <div class="stats">
+      <div class="stat stat-r"><span class="stat-lbl" style="color:#00ff88">LV</span><span class="stat-val" style="color:#00ff88;font-weight:bold">V1</span></div>
+      <div class="stat stat-r"><span class="stat-lbl">HP</span><div class="bar"><div class="bar-fill hp2" style="width:100%"></div></div><span class="stat-val">INF</span></div>
+      <div class="stat stat-r"><span class="stat-lbl">MP</span><div class="bar"><div class="bar-fill mp2" style="width:88%"></div></div><span class="stat-val">880</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ANIMACION DE BOCA
+let timers={edhersan:null,zael:null};
+let typeT=null;
+
+// Cambia la forma/color de la boca segun personaje y estado (abierta/cerrada).
+function setMouth(who,open){
+  if(who==='edhersan'){
+    const m=document.getElementById('mouth-edhersan');
+    m.style.height=open?'8px':'4px';
+    m.style.top=open?'40px':'42px';
+    m.style.background=open?'#4a1008':'#0a0604';
+  } else {
+    const m=document.getElementById('mouth-zael');
+    m.style.height=open?'7px':'3px';
+    m.style.top=open?'42px':'43px';
+    m.style.background=open?'#002810':'#224433';
+  }
+}
+
+// Anima boca y activa los dots de voz durante el tiempo indicado.
+function animMouth(who,dur){
+  const dotsEl=document.getElementById('dots-'+who);
+  dotsEl.classList.add('on');
+  if(timers[who]) clearInterval(timers[who]);
+  let t=0;
+  timers[who]=setInterval(()=>{
+    t+=80;
+    setMouth(who,Math.sin(t/100)>0);
+    if(t>=dur){ clearInterval(timers[who]); setMouth(who,false); dotsEl.classList.remove('on'); }
+  },80);
+}
+
+// TYPEWRITER
+// Escribe el texto letra por letra y actualiza quien habla.
+function typeText(text,col,name){
+  document.getElementById('dlg-speaker').textContent=name;
+  document.getElementById('dlg-speaker').style.color=col;
+  const el=document.getElementById('dlg-content');
+  el.textContent='';
+  let i=0;
+  if(typeT) clearInterval(typeT);
+  typeT=setInterval(()=>{ if(i<text.length) el.textContent+=text[i++]; else clearInterval(typeT); },22);
+}
+
+// IDLE BOB
+// Movimiento idle continuo para dar vida a ambos avatares.
+let idleT=0;
+(function idleBob(){
+  idleT+=0.04;
+  document.getElementById('head-edhersan').style.transform=`translateY(${Math.sin(idleT)*2}px)`;
+  document.getElementById('head-zael').style.transform=`translateY(${Math.sin(idleT+Math.PI)*2}px)`;
+  requestAnimationFrame(idleBob);
+})();
+
+// WEBSOCKET
+// Conecta con backend local y actualiza UI al recibir mensajes.
+let ws=null;
+function connectWS(){
+  try {
+    ws=new WebSocket('ws://localhost:8765');
+    ws.onopen=()=>{
+      document.getElementById('ws-dot').classList.add('on');
+      document.getElementById('ws-label').textContent='Zael V1 conectado';
+    };
+    ws.onmessage=(e)=>{
+      try {
+        const d=JSON.parse(e.data);
+        // speaker: "edhersan" o "zael"
+        const who=d.speaker==='edhersan'?'edhersan':'zael';
+        const col=who==='edhersan'?'#aa88ff':'#00ff88';
+        const name=who==='edhersan'?'edhersan':'Zael V1';
+        const text=d.text||'';
+        typeText(text,col,name);
+        animMouth(who,Math.max(text.length*55+400,1500));
+      } catch(err){ console.error('WS parse:',err); }
+    };
+    ws.onclose=()=>{
+      document.getElementById('ws-dot').classList.remove('on');
+      document.getElementById('ws-label').textContent='WebSocket: reconectando...';
+      setTimeout(connectWS,3000);
+    };
+    ws.onerror=()=>{
+      document.getElementById('ws-label').textContent='WebSocket: sin servidor en :8765';
+    };
+  } catch(e){
+    document.getElementById('ws-label').textContent='WebSocket: error';
+  }
+}
+
+// BOOT
+// Mensaje inicial antes de recibir eventos por WebSocket.
+setTimeout(()=>{
+  typeText('"Zael V1 online. Listo para el stream, carnal. Arrancamos?"','#00ff88','Zael V1');
+  animMouth('zael',3400);
+},400);
+
+connectWS();
+</script>
+</body>
+</html>

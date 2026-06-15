@@ -6,3 +6,4 @@ SpeechRecognition
 SoundFile
 edge-tts
 playsound
+websockets
