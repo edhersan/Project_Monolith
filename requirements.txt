@@ -5,5 +5,5 @@ python-dotenv
 SpeechRecognition
 SoundFile
 edge-tts
-playsound
+
 websockets

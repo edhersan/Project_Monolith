@@ -7,8 +7,10 @@ delegia la generacion al proveedor LLM y expone una interfaz pequena para
 la capa de entrada.
 """
 
+import asyncio
 from dataclasses import dataclass
 from typing import Callable, Protocol
+from typing import Optional
 
 
 class LLMProvider(Protocol):
@@ -26,12 +28,16 @@ class MonolithApp:
     def __init__(self, llm_provider: LLMProvider):
         self.llm_provider = llm_provider
         self._response_callback: Callable[[str], None] | None = None
+        self.ws_server: Optional[any] = None
 
     def set_response_callback(self, callback: Callable[[str], None]) -> None:
         # Permite enganchar efectos secundarios sin acoplarlos al nucleo.
         self._response_callback = callback
 
-    def handle_transcript(self, event: TranscriptEvent) -> str | None:
+    def set_ws_server(self, ws_server: any) -> None:
+        self.ws_server = ws_server
+
+    async def handle_transcript(self, event: TranscriptEvent) -> str | None:
         # Solo procesamos eventos ya cerrados para evitar respuestas parciales.
         if not event.is_final:
             return None
@@ -40,10 +46,19 @@ class MonolithApp:
         if not prompt:
             return None
 
+        print(f"[APP] Procesando input: {prompt}")
+
         response = self.llm_provider.generate(prompt)
 
         if self._response_callback is not None:
             self._response_callback(response)
+
+        if self.ws_server is not None and response:
+            print(f"[APP] Enviando WebSocket: {response}")
+            asyncio.create_task(self.ws_server.broadcast({
+                "speaker": "zael",
+                "text": response
+            }))
 
         return response
 
