@@ -8,12 +8,14 @@ la sintesis TTS para no mezclar esas dependencias con el nucleo de la app.
 
 import io
 import os
+import time
 
+import numpy as np
 import edge_tts
 import sounddevice as sd
 import soundfile as sf
 import speech_recognition as sr
-from playsound import playsound
+import subprocess
 
 
 async def hablar_monolith(texto: str) -> None:
@@ -33,20 +35,54 @@ async def hablar_monolith(texto: str) -> None:
         await communicate.save(output_file)
 
         print("[Hablando...]")
-        playsound(output_file)
+        subprocess.run(["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", output_file], check=True)
     except Exception as error:
         print(f"[Error al generar o reproducir voz]: {error}")
 
 
 def escuchar_microfono_estable() -> str | None:
-    """Captura audio usando sounddevice y lo procesa."""
+    """Captura audio con deteccion de voz: espera a que hables, graba hasta 3s de silencio."""
     sample_rate = 16000
-    duration = 5
+    silence_limit = 3.0
+    energy_threshold = 500
+    chunk_duration = 0.3
 
-    # Se fija una duracion corta y predecible para simplificar la captura.
-    print("\n[Escuchando] Habla ahora (Grabando 5 segundos)...")
-    recording = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype="int16")
-    sd.wait()
+    chunk_samples = int(chunk_duration * sample_rate)
+    chunks: list[np.ndarray] = []
+    speaking = False
+    silence_start: float | None = None
+    max_duration = 30.0
+    start_time: float | None = None
+
+    print("\n[Escuchando] Esperando que hables...")
+
+    with sd.InputStream(samplerate=sample_rate, channels=1, dtype="int16") as stream:
+        while True:
+            chunk, _ = stream.read(chunk_samples)
+            energy = int(np.abs(chunk).mean())
+
+            if energy > energy_threshold:
+                if not speaking:
+                    print("[Escuchando] Te detecte hablando...")
+                    speaking = True
+                    start_time = time.monotonic()
+                chunks.append(chunk.copy())
+                silence_start = None
+            elif speaking:
+                chunks.append(chunk.copy())
+                if silence_start is None:
+                    silence_start = time.monotonic()
+                elif time.monotonic() - silence_start >= silence_limit:
+                    print("[Escuchando] Silencio detectado, procesando...")
+                    break
+                if time.monotonic() - start_time >= max_duration:
+                    print("[Escuchando] Tiempo maximo alcanzado, procesando...")
+                    break
+
+    if not chunks:
+        return None
+
+    recording = np.concatenate(chunks)
 
     print("[Procesando voz...]")
     buffer_audio = io.BytesIO()
