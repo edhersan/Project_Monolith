@@ -16,5 +16,22 @@ __pycache__/
 # Audio temporal generado por Monolith
 *.mp3
 
+# Virtual environments
+venv/
+.venv/
+
 # Configuración local de VS Code
 .vscode/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.userprefs
+*.csproj.user
+**/Debug/
+**/Release/
+.vs/
+*.nupkg

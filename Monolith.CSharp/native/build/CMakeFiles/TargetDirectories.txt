@@ -1,0 +1,3 @@
+C:/Users/edhersan/Project_Monolith/Monolith.CSharp/native/build/CMakeFiles/tts_native.dir
+C:/Users/edhersan/Project_Monolith/Monolith.CSharp/native/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/edhersan/Project_Monolith/Monolith.CSharp/native/build/CMakeFiles/ZERO_CHECK.dir

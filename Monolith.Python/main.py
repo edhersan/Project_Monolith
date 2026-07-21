@@ -55,16 +55,20 @@ async def main_loop() -> None:
     try:
         await ws_server.start()
         print("[WS] Servidor WebSocket activo en ws://localhost:8765")
+        print(f"[WS] Clientes conectados: {ws_server.connected_clients}")
     except Exception as error:
         print(f"[WS] No se pudo iniciar el servidor WebSocket: {error}")
 
     try:
-        # Crea la app con su proveedor LLM real; si falta configuración, aborta limpio.
+        # Crea la app con su proveedor LLM real; si falta configuracion, aborta limpio.
         app = create_app()
     except Exception as error:
         print(f"[ERROR INICIALIZACION]: {error}")
         await ws_server.stop()
         return
+
+    app.set_ws_server(ws_server)
+    print(f"[WS] ws_server inyectado en app. Clientes conectados: {ws_server.connected_clients}")
 
     try:
         while True:
@@ -81,7 +85,7 @@ async def main_loop() -> None:
                     break
 
                 # Convierte el texto detectado en un evento final para el núcleo de la app.
-                response = app.handle_transcript(
+                response = await app.handle_transcript(
                     TranscriptEvent(text=user_input, is_final=True)
                 )
                 if response is None:

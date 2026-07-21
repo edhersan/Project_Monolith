@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\edhersan\Project_Monolith\Monolith.CSharp\native\build\CMakeFiles\c39bdb2d95fcea9a6d7ce65f136503b7\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{78150DDF-E329-3553-8D01-D6BA485F7943}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

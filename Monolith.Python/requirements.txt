@@ -7,3 +7,5 @@ SoundFile
 edge-tts
 playsound
 websockets
+fastapi
+uvicorn

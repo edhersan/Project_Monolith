@@ -60,10 +60,13 @@ class FooterWSServer:
 
     async def broadcast(self, payload: dict[str, Any]) -> None:
         if not self._clients:
+            print(f"[WS] No hay clientes conectados para enviar mensaje: {payload}")
             return
 
         message = json.dumps(payload, ensure_ascii=False)
         clients = list(self._clients)
+
+        print(f"[WS] Enviando mensaje a {len(clients)} clientes: {message[:100]}...")
 
         results = await asyncio.gather(
             *(client.send(message) for client in clients),
