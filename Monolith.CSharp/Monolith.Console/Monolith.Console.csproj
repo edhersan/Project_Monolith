@@ -33,4 +33,21 @@
     <Copy SourceFiles="$(NuGetPackageRoot)webrtcvadsharp\1.3.0\build\x86\WebRtcVad.dll" DestinationFolder="$(OutputPath)" Condition="!Exists('$(NuGetPackageRoot)webrtcvadsharp\1.3.0\build\x64\WebRtcVad.dll') and Exists('$(NuGetPackageRoot)webrtcvadsharp\1.3.0\build\x86\WebRtcVad.dll')" />
   </Target>
 
+  <Target Name="CopyEspeakNg" AfterTargets="AfterBuild">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\runtimes\win-x64\native\espeak-ng.exe"
+          DestinationFolder="$(OutputPath)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\runtimes\win-x64\native\libespeak-ng.dll"
+          DestinationFolder="$(OutputPath)" />
+    <ItemGroup>
+      <EspeakDataFiles Include="$(MSBuildProjectDirectory)\runtimes\win-x64\native\espeak-ng-data\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(EspeakDataFiles)"
+          DestinationFolder="$(OutputPath)\espeak-ng-data\%(RecursiveDir)" />
+    <ItemGroup>
+      <ModelFiles Include="$(MSBuildProjectDirectory)\Models\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ModelFiles)"
+          DestinationFolder="$(OutputPath)\Models\%(RecursiveDir)" />
+  </Target>
+
 </Project>

@@ -33,6 +33,7 @@ public record MonolithConfig
     public int TtsNativeMaxConcurrency { get; init; } = 1;
 
     public string TtsOnnxModelPath { get; init; } = "";
+    public string TtsOnnxSelectedVoice { get; init; } = "";
     public int TtsOnnxSampleRate { get; init; } = 22050;
     public int TtsOnnxSpeakerId { get; init; } = 0;
 

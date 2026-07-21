@@ -35,3 +35,6 @@ obj/
 **/Release/
 .vs/
 *.nupkg
+
+# Modelos ONNX locales muy grandes
+Monolith.CSharp/Monolith.Console/Models/**/*.onnx

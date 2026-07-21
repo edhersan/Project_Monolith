@@ -89,10 +89,14 @@ builder.Services.AddSingleton<ITTSService>(sp =>
 
     if (!string.IsNullOrEmpty(config.TtsOnnxModelPath) && Directory.Exists(config.TtsOnnxModelPath))
     {
-        Console.WriteLine($"[TTS] Usando ONNX: {config.TtsOnnxModelPath}");
+        var voiceName = !string.IsNullOrEmpty(config.TtsOnnxSelectedVoice)
+            ? config.TtsOnnxSelectedVoice
+            : null;
+        Console.WriteLine($"[TTS] Usando ONNX: {config.TtsOnnxModelPath}" +
+            (voiceName != null ? $" [{voiceName}]" : ""));
         return new TtsOnnxService(
             config.TtsOnnxModelPath,
-            config.TtsOnnxSampleRate,
+            voiceName,
             config.TtsOnnxSpeakerId,
             metrics: sp.GetRequiredService<PipelineMetrics>());
     }
